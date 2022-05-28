@@ -1,9 +1,4 @@
-# TikTok App UI
 
-- [Support me on Patreon](https://www.patreon.com/sopheamenvan?fan_landing=true)
-- [Watch on youtube](https://youtu.be/wMLwSlCvaLw)
-
-![TikTok App UI](https://user-images.githubusercontent.com/16510597/88754800-d5728b80-d189-11ea-862d-be294c22da84.jpg)
 
 ## Note:
  This project could run only in a real device since the video player does not support a simulator or either emulator.
