@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tik_tok_ui/constant/data_json.dart';
+import 'package:tik_tok_ui/pages/controller/video_controller.dart';
 import 'package:tik_tok_ui/theme/colors.dart';
 import 'package:tik_tok_ui/widgets/header_home_page.dart';
 import 'package:tik_tok_ui/widgets/column_social_icon.dart';
@@ -14,6 +16,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  final controller =Get.put(FVideoController);
+
   TabController _tabController;
   @override
   void initState() {

@@ -25,6 +25,7 @@ class _RootAppState extends State<RootApp> {
       children: <Widget>[
         MainPage(),
         HomePage(),
+
         Center(
           child: Text("Discover",style: TextStyle(
             color: black,
