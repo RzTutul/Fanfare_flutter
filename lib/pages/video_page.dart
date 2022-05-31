@@ -3,21 +3,21 @@ import 'package:get/get.dart';
 import 'package:tik_tok_ui/constant/data_json.dart';
 import 'package:tik_tok_ui/pages/controller/video_controller.dart';
 import 'package:tik_tok_ui/theme/colors.dart';
-import 'package:tik_tok_ui/widgets/header_home_page.dart';
 import 'package:tik_tok_ui/widgets/column_social_icon.dart';
 import 'package:tik_tok_ui/widgets/left_panel.dart';
 import 'package:tik_tok_ui/widgets/tik_tok_icons.dart';
 import 'package:video_player/video_player.dart';
+import 'package:tik_tok_ui/widgets/header_home_page.dart';
 
-class HomePage extends StatefulWidget {
+import 'controller/category_controller.dart';
+
+class VideoPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _VideoPageState createState() => _VideoPageState();
 }
 
-class _HomePageState extends State<HomePage>
+class _VideoPageState extends State<VideoPage>
     with SingleTickerProviderStateMixin {
-  final controller =Get.put(FVideoController);
-
   TabController _tabController;
   @override
   void initState() {
@@ -99,17 +99,19 @@ class VideoPlayerItem extends StatefulWidget {
 class _VideoPlayerItemState extends State<VideoPlayerItem> {
   VideoPlayerController _videoController;
   bool isShowPlaying = false;
+  final c = Get.put(FVideoController());
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _videoController = VideoPlayerController.asset(widget.videoUrl)
+    _videoController = VideoPlayerController.network("https://techtunes999.000webhostapp.com/videos/"+c.video.value.videoUrl)
       ..initialize().then((value) {
        _videoController.play();
         setState(() {
-          
+
           isShowPlaying = false;
         });
       });
@@ -123,12 +125,11 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     super.dispose();
     _videoController.dispose();
 
-    
+
   }
   Widget isPlaying(){
     return _videoController.value.isPlaying && !isShowPlaying  ? Container() : Icon(Icons.play_arrow,size: 80,color: white.withOpacity(0.5),);
   }
-
   @override
   Widget build(BuildContext context) {
     return InkWell(

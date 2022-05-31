@@ -5,6 +5,7 @@ import 'package:tik_tok_ui/repository/video_repository.dart';
 class FVideoController extends GetxController {
   final VideoRepository _videoRepository = Get.put(VideoRepository());
   final datalist = <ContentData>[].obs;
+  final video = ContentData().obs;
 
   Future<VideoResponse> getAllContentList() async{
     VideoResponse response =await _videoRepository.getAllVideoList();

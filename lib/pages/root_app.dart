@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tik_tok_ui/pages/home_page.dart';
 import 'package:tik_tok_ui/pages/main_page.dart';
+import 'package:tik_tok_ui/pages/upload_page.dart';
 import 'package:tik_tok_ui/theme/colors.dart';
 import 'package:tik_tok_ui/widgets/tik_tok_icons.dart';
 import 'package:tik_tok_ui/widgets/upload_icon.dart';
@@ -10,30 +15,34 @@ class RootApp extends StatefulWidget {
   _RootAppState createState() => _RootAppState();
 }
 
+
 class _RootAppState extends State<RootApp> {
   int pageIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: getBody(),
-      bottomNavigationBar: getFooter(),
+    return GetMaterialApp(
+      home: Scaffold(
+        body: getBody(),
+        bottomNavigationBar: getFooter(),
+      ),
     );
   }
+
+
   Widget getBody(){
     return IndexedStack(
       index: pageIndex,
       children: <Widget>[
         MainPage(),
         HomePage(),
-
+        UploadPage(),
         Center(
-          child: Text("Discover",style: TextStyle(
+          child: Text("All Activity",style: TextStyle(
             color: black,
             fontSize: 20,
             fontWeight: FontWeight.bold
           ),),
-        ),
-        Center(
+        ),   Center(
           child: Text("All Activity",style: TextStyle(
             color: black,
             fontSize: 20,

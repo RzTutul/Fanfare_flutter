@@ -43,7 +43,7 @@ class UploadIcon extends StatelessWidget {
                 color: white,
                 borderRadius: BorderRadius.circular(8)
               ),
-              child: Icon(Icons.add),
+              child: Icon(Icons.video_call),
             ),
           )
         ],
