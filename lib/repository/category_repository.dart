@@ -16,7 +16,7 @@ class CategoryRepository implements ICategoryRepository {
   @override
   Future<ContentCategoryResponse> getAllCategory() async {
 
-    final response = await _dio.get("https://techtunes999.000webhostapp.com/categories_retrive.php");
+    final response = await _dio.get("http://techtunes999.000webhostapp.com/categories_retrive.php");
 
     ContentCategoryResponse categoryResponse = ContentCategoryResponse.fromJson(response.data);
 

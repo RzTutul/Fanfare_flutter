@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tik_tok_ui/pages/controller/video_controller.dart';
+import 'package:tik_tok_ui/pages/upload_video.dart';
 import 'package:video_player/video_player.dart';
 
 class UploadPage extends StatefulWidget {
@@ -11,27 +14,9 @@ class UploadPage extends StatefulWidget {
   @override
   State<UploadPage> createState() => _UploadPageState();
 }
-
-pickVideo() async {
-  final ImagePicker _picker = ImagePicker();
-  PickedFile video;
-  video = await _picker.getVideo(
-      source: ImageSource.gallery, maxDuration: Duration(seconds: 59));
-  if (video.path != null) {
-    File file = File(video.path);
-    var size = await file.length();
-    print("FILE :$size");
-    if (size > 25000000) {
-      // Fluttertoast.showToast(msg: "File size is bigger then 25 MB");
-    } else {
-      //await widget.controller.uploadFile(file, ".mp4");
-    }
-  }
-}
-
 class _UploadPageState extends State<UploadPage> {
   List<XFile> _imageFileList;
-
+  final controller = Get.put(FVideoController());
   void _setImageFileListFromFile(XFile value) {
     _imageFileList = value == null ? null : <XFile>[value];
   }
@@ -42,11 +27,11 @@ class _UploadPageState extends State<UploadPage> {
   VideoPlayerController _controller;
   VideoPlayerController _toBeDisposed;
   String _retrieveDataError;
+  String path;
+  XFile selctfile;
 
   final ImagePicker _picker = ImagePicker();
-  final TextEditingController maxWidthController = TextEditingController();
-  final TextEditingController maxHeightController = TextEditingController();
-  final TextEditingController qualityController = TextEditingController();
+
 
   Future<void> _playVideo(XFile file) async {
     if (file != null && mounted) {
@@ -66,8 +51,10 @@ class _UploadPageState extends State<UploadPage> {
       const double volume = kIsWeb ? 0.0 : 1.0;
       await controller.setVolume(volume);
       await controller.initialize();
-      await controller.setLooping(true);
+      await controller.setLooping(false);
       await controller.play();
+      path = file.path;
+      selctfile = file;
       setState(() {});
     }
   }
@@ -82,43 +69,6 @@ class _UploadPageState extends State<UploadPage> {
           source: source, maxDuration: const Duration(seconds: 10));
 
       await _playVideo(file);
-    } else if (isMultiImage) {
-      await _displayPickImageDialog(context,
-              (double maxWidth, double maxHeight, int quality) async {
-            try {
-              final List<XFile> pickedFileList = await _picker.pickMultiImage(
-                maxWidth: maxWidth,
-                maxHeight: maxHeight,
-                imageQuality: quality,
-              );
-              setState(() {
-                _imageFileList = pickedFileList;
-              });
-            } catch (e) {
-              setState(() {
-                _pickImageError = e;
-              });
-            }
-          });
-    } else {
-      await _displayPickImageDialog(context,
-              (double maxWidth, double maxHeight, int quality) async {
-            try {
-              final XFile pickedFile = await _picker.pickImage(
-                source: source,
-                maxWidth: maxWidth,
-                maxHeight: maxHeight,
-                imageQuality: quality,
-              );
-              setState(() {
-                _setImageFileListFromFile(pickedFile);
-              });
-            } catch (e) {
-              setState(() {
-                _pickImageError = e;
-              });
-            }
-          });
     }
   }
 
@@ -134,9 +84,7 @@ class _UploadPageState extends State<UploadPage> {
   @override
   void dispose() {
     _disposeVideoController();
-    maxWidthController.dispose();
-    maxHeightController.dispose();
-    qualityController.dispose();
+
     super.dispose();
   }
 
@@ -237,7 +185,20 @@ class _UploadPageState extends State<UploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(""),
+        title: Text("Upload video 1/2"),
+        actions: [
+          isVideo==true? Padding(
+            padding: const EdgeInsets.fromLTRB(0,0.0,10,0),
+            child: InkWell(
+                onTap: (){
+                  print('value path${path}');
+                  controller.videopath.value = path;
+                  Get.to(UploadVideoPage());
+                },
+                child: Icon(Icons.done)),
+          ):Container()
+
+        ],
       ),
       body: Center(
         child: !kIsWeb && defaultTargetPlatform == TargetPlatform.android
@@ -273,46 +234,7 @@ class _UploadPageState extends State<UploadPage> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Semantics(
-            label: 'image_picker_example_from_gallery',
-            child: FloatingActionButton(
-              onPressed: () {
-                isVideo = false;
-                _onImageButtonPressed(ImageSource.gallery, context: context);
-              },
-              heroTag: 'image0',
-              tooltip: 'Pick Image from gallery',
-              child: const Icon(Icons.photo),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: FloatingActionButton(
-              onPressed: () {
-                isVideo = false;
-                _onImageButtonPressed(
-                  ImageSource.gallery,
-                  context: context,
-                  isMultiImage: true,
-                );
-              },
-              heroTag: 'image1',
-              tooltip: 'Pick Multiple Image from gallery',
-              child: const Icon(Icons.photo_library),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: FloatingActionButton(
-              onPressed: () {
-                isVideo = false;
-                _onImageButtonPressed(ImageSource.camera, context: context);
-              },
-              heroTag: 'image2',
-              tooltip: 'Take a Photo',
-              child: const Icon(Icons.camera_alt),
-            ),
-          ),
+
           Padding(
             padding: const EdgeInsets.only(top: 16.0),
             child: FloatingActionButton(
@@ -353,63 +275,6 @@ class _UploadPageState extends State<UploadPage> {
     return null;
   }
 
-  Future<void> _displayPickImageDialog(
-      BuildContext context, OnPickImageCallback onPick) async {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Add optional parameters'),
-            content: Column(
-              children: <Widget>[
-                TextField(
-                  controller: maxWidthController,
-                  keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-                  decoration: const InputDecoration(
-                      hintText: 'Enter maxWidth if desired'),
-                ),
-                TextField(
-                  controller: maxHeightController,
-                  keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-                  decoration: const InputDecoration(
-                      hintText: 'Enter maxHeight if desired'),
-                ),
-                TextField(
-                  controller: qualityController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                      hintText: 'Enter quality if desired'),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('CANCEL'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                  child: const Text('PICK'),
-                  onPressed: () {
-                    final double width = maxWidthController.text.isNotEmpty
-                        ? double.parse(maxWidthController.text)
-                        : null;
-                    final double height = maxHeightController.text.isNotEmpty
-                        ? double.parse(maxHeightController.text)
-                        : null;
-                    final int quality = qualityController.text.isNotEmpty
-                        ? int.parse(qualityController.text)
-                        : null;
-                    onPick(width, height, quality);
-                    Navigator.of(context).pop();
-                  }),
-            ],
-          );
-        });
-  }
 }
 
 typedef OnPickImageCallback = void Function(
@@ -456,7 +321,9 @@ class AspectRatioVideoState extends State<AspectRatioVideo> {
       return Center(
         child: AspectRatio(
           aspectRatio: controller.value.aspectRatio,
-          child: VideoPlayer(controller),
+          child: Container(
+              height: 10,
+              child: VideoPlayer(controller)),
         ),
       );
     } else {
