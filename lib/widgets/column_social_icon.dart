@@ -43,8 +43,7 @@ Widget getAlbum(albumImg) {
           ),
           Text(
             count,
-            style: TextStyle(
-                color: white, fontSize: 12, fontWeight: FontWeight.w700),
+            style: TextStyle(color: white, fontSize: 12, fontWeight: FontWeight.w700),
           )
         ],
       ),

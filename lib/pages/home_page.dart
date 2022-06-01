@@ -238,7 +238,21 @@ class RightPanel extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 getProfile(profileImg),
-                getIcons(TikTokIcons.heart, likes, 35.0),
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      Icon(TikTokIcons.heart, color: white, size: 35.0),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        likes,
+                        style: TextStyle(color: white, fontSize: 12, fontWeight: FontWeight.w700),
+                      )
+                    ],
+                  ),
+                ),
+
                 getIcons(TikTokIcons.chat_bubble, comments, 35.0),
                 getIcons(TikTokIcons.reply, shares, 25.0),
                 getAlbum(albumImg)

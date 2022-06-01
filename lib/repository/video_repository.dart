@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:tik_tok_ui/constant/global_file.dart';
 import 'package:tik_tok_ui/models/video_response.dart';
 
 import '../models/upload_content_request.dart';
@@ -30,15 +32,15 @@ class VideoRepository implements IVideoRepository {
   Future<String> uploadFile(String path,UploadContent content) async {
     FormData formData = new FormData.fromMap({
       'file':await MultipartFile.fromFile(path,
-          filename: "testing.mp4"),
+          filename: (DateTime.now().millisecondsSinceEpoch).toString()+".mp4"),
       "name" : content.name,
       "caption" : content.caption,
       "songName" : content.songName,
-      "profileImg" : content.profileImg,
+      "profileImg" : images[Random().nextInt(3)],
       "likes" : content.likes,
       "comments" : content.comments,
       "shares" : content.shares,
-      "albumImg" : content.albumImg,
+      "albumImg" : images[Random().nextInt(3)],
     });
     var response = await _dio.post("https://techtunes999.000webhostapp.com/uploadcontentvideo.php",data: formData);
     print("upload staus: ${response}");

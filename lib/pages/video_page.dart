@@ -107,7 +107,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     // TODO: implement initState
     super.initState();
 
-    _videoController = VideoPlayerController.network("https://techtunes999.000webhostapp.com/videos/"+c.video.value.videoUrl)
+    _videoController = VideoPlayerController.network("https://techtunes999.000webhostapp.com/"+c.video.value.videoUrl)
       ..initialize().then((value) {
        _videoController.play();
         setState(() {

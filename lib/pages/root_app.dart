@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tik_tok_ui/pages/all_category.dart';
 import 'package:tik_tok_ui/pages/home_page.dart';
 import 'package:tik_tok_ui/pages/main_page.dart';
 import 'package:tik_tok_ui/pages/upload_page.dart';
+import 'package:tik_tok_ui/pages/user_page.dart';
 import 'package:tik_tok_ui/theme/colors.dart';
 import 'package:tik_tok_ui/widgets/tik_tok_icons.dart';
 import 'package:tik_tok_ui/widgets/upload_icon.dart';
@@ -20,11 +22,9 @@ class _RootAppState extends State<RootApp> {
   int pageIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: Scaffold(
-        body: getBody(),
-        bottomNavigationBar: getFooter(),
-      ),
+    return Scaffold(
+      body: getBody(),
+      bottomNavigationBar: getFooter(),
     );
   }
 
@@ -36,26 +36,8 @@ class _RootAppState extends State<RootApp> {
         MainPage(),
         HomePage(),
         UploadPage(),
-        Center(
-          child: Text("All Activity",style: TextStyle(
-            color: black,
-            fontSize: 20,
-            fontWeight: FontWeight.bold
-          ),),
-        ),   Center(
-          child: Text("All Activity",style: TextStyle(
-            color: black,
-            fontSize: 20,
-            fontWeight: FontWeight.bold
-          ),),
-        ),
-        Center(
-          child: Text("Profile",style: TextStyle(
-            color: black,
-            fontSize: 20,
-            fontWeight: FontWeight.bold
-          ),),
-        )
+       AllCategory(),
+        UserInfoPage()
       ],
     );
   }
@@ -65,7 +47,7 @@ class _RootAppState extends State<RootApp> {
       {"icon":TikTokIcons.home, "label": "Home", "isIcon": true},
       {"icon": TikTokIcons.search, "label": "Discover", "isIcon": true},
       {"icon": "", "label": "", "isIcon": false},
-      {"icon": TikTokIcons.messages, "label": "Inbox", "isIcon": true},
+      {"icon": TikTokIcons.messages, "label": "List", "isIcon": true},
       {"icon": TikTokIcons.profile, "label": "Me", "isIcon": true}
     ];
     return Container(

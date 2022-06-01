@@ -143,7 +143,7 @@ class _UploadPageState extends State<UploadPage> {
       );
     } else {
       return const Text(
-        'You have not yet picked an image.',
+        'You have not yet picked an Video.',
         textAlign: TextAlign.center,
       );
     }
@@ -197,7 +197,6 @@ class _UploadPageState extends State<UploadPage> {
                 },
                 child: Icon(Icons.done)),
           ):Container()
-
         ],
       ),
       body: Center(
@@ -209,7 +208,7 @@ class _UploadPageState extends State<UploadPage> {
               case ConnectionState.none:
               case ConnectionState.waiting:
                 return const Text(
-                  'You have not yet picked an image.',
+                  'You have not yet picked an Video.',
                   textAlign: TextAlign.center,
                 );
               case ConnectionState.done:
@@ -222,7 +221,7 @@ class _UploadPageState extends State<UploadPage> {
                   );
                 } else {
                   return const Text(
-                    'You have not yet picked an image.',
+                    'You have not yet picked an Video.',
                     textAlign: TextAlign.center,
                   );
                 }

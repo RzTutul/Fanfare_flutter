@@ -18,7 +18,9 @@ class FVideoController extends GetxController {
   }
 
   Future<String> uploadFile(String path, UploadContent content) async {
+
     final response = await _videoRepository.uploadFile(path, content);
+    return response;
   }
     @override
   void onInit() {
