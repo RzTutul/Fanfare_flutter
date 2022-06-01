@@ -56,7 +56,7 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
             key: _formKey,
             child: ListView(
               children: [
-                Text(controller.videopath.value),
+              /*  Text(controller.videopath.value),*/
                 // Image.memory(uint8list),
 
                 TextFormField(
@@ -147,7 +147,6 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
                       await controller.getAllContentList();
                       Navigator.of(dialogContext).pop();
                       Get.to(RootApp());
-
 
                       print("helooo"+result);
                     }

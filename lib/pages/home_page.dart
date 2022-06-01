@@ -107,7 +107,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
 
     _videoController = VideoPlayerController.asset(widget.videoUrl)
       ..initialize().then((value) {
-       _videoController.play();
+      // _videoController.play();
         setState(() {
           
           isShowPlaying = false;
@@ -122,8 +122,6 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     // TODO: implement dispose
     super.dispose();
     _videoController.dispose();
-
-    
   }
   Widget isPlaying(){
     return _videoController.value.isPlaying && !isShowPlaying  ? Container() : Icon(Icons.play_arrow,size: 80,color: white.withOpacity(0.5),);
